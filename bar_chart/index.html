@@ -14,6 +14,36 @@
         "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json",
       );
       const { data } = await response.json();
+      const w = 720;
+      const h = 180;
+      const padding = 20;
+
+      const year = data.map((set) => set[0]);
+      const gdp = data.map((set) => set[1]);
+
+      const barWidth = w / gdp.length;
+      const xScale = d3.scaleLinear().domain([0, gdp.length]).range([0, w]);
+      const yScale = d3
+        .scaleLinear()
+        .domain([0, d3.max(gdp)])
+        .rage([0, h - padding]);
+
+      const chart = d3
+        .select("body")
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h);
+
+      chart
+        .selectAll("rect")
+        .data(gdp)
+        .enter()
+        .append("rect")
+        .attr("x", (d, i) => xScale)
+        .attr("y", (d) => h - yScale)
+        .attr("width", barWidth)
+        .attr("height", (d) => yScale)
+        .attr("fill", "teal");
     </script>
   </body>
 </html>

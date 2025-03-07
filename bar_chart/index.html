@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title></title>
+    <title>GDP Bar Chart</title>
     <link href="css/styles.css" rel="stylesheet" />
   </head>
   <body>
@@ -14,36 +14,81 @@
         "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json",
       );
       const { data } = await response.json();
-      const w = 720;
-      const h = 180;
-      const padding = 20;
 
-      const year = data.map((set) => set[0]);
-      const gdp = data.map((set) => set[1]);
+      const w = 800;
+      const h = 400;
+      const padding = { top: 20, right: 30, bottom: 40, left: 60 };
 
-      const barWidth = w / gdp.length;
-      const xScale = d3.scaleLinear().domain([0, gdp.length]).range([0, w]);
+      // Parse dates from the date strings in the data
+      const parseTime = d3.timeParse("%Y-%m-%d");
+      const years = data.map((d) => parseTime(d[0]));
+      const gdp = data.map((d) => d[1]);
+
+      // Create scales
+      const xScale = d3
+        .scaleBand()
+        .domain(d3.range(data.length))
+        .range([padding.left, w - padding.right])
+        .padding(0.1);
+
+      const xTimeScale = d3
+        .scaleTime()
+        .domain([d3.min(years), d3.max(years)])
+        .range([padding.left, w - padding.right]);
+
       const yScale = d3
         .scaleLinear()
         .domain([0, d3.max(gdp)])
-        .rage([0, h - padding]);
+        .range([h - padding.bottom, padding.top]);
 
-      const chart = d3
+      // Create SVG
+      const svg = d3
         .select("body")
         .append("svg")
         .attr("width", w)
-        .attr("height", h);
+        .attr("height", h)
+        .attr("id", "title"); // for freeCodeCamp test
 
-      chart
+      // Add bars
+      svg
         .selectAll("rect")
-        .data(gdp)
+        .data(data)
         .enter()
         .append("rect")
-        .attr("x", (d, i) => xScale)
-        .attr("y", (d) => h - yScale)
-        .attr("width", barWidth)
-        .attr("height", (d) => yScale)
-        .attr("fill", "teal");
+        .attr("x", (_, i) => xScale(i))
+        .attr("y", (d) => yScale(d[1]))
+        .attr("width", xScale.bandwidth())
+        .attr("height", (d) => h - padding.bottom - yScale(d[1]))
+        .attr("fill", "teal")
+        .attr("class", "bar")
+        .attr("data-date", (d) => d[0]) // for freeCodeCamp test
+        .attr("data-gdp", (d) => d[1]) // for freeCodeCamp test
+        .append("title")
+        .text((d) => `Date: ${d[0]}\nGDP: $${d[1]} Billion`);
+
+      // Add x-axis
+      const xAxis = d3.axisBottom(xTimeScale);
+      svg
+        .append("g")
+        .attr("id", "x-axis") // for freeCodeCamp test
+        .attr("transform", `translate(0, ${h - padding.bottom})`)
+        .call(xAxis);
+
+      // Add y-axis
+      const yAxis = d3.axisLeft(yScale);
+      svg
+        .append("g")
+        .attr("id", "y-axis") // for freeCodeCamp test
+        .attr("transform", `translate(${padding.left}, 0)`)
+        .call(yAxis);
+
+      // Add y-axis label
+      svg
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -h / 2)
+        .attr("y", 20)
+        .text("GDP (Billions of Dollars)");
     </script>
   </body>
 </html>

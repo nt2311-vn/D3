@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { data } from "../data.json" assert { type: "json" };
+import { data } from "../data.json";
 
 const w = 720;
 const h = 480;

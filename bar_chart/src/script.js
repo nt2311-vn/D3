@@ -63,7 +63,7 @@ svg
 	.attr("y", (d) => yScale(d[1]))
 	.attr("width", xScale.bandwidth())
 	.attr("height", (d) => h - padding.bottom - yScale(d[1]))
-	.attr("fill", "teal")
+	.attr("fill", "black")
 	.attr("class", "bar")
 	.attr("data-date", (d) => d[0])
 	.attr("data-gdp", (d) => d[1])
@@ -71,7 +71,7 @@ svg
 		d3.select(this)
 			.transition()
 			.duration(200)
-			.attr("fill", "orange")
+			.attr("fill", "blue")
 			.style("opacity", 0.7);
 
 		tooltip
@@ -85,7 +85,7 @@ svg
 		d3.select(this)
 			.transition()
 			.duration(200)
-			.attr("fill", "teal")
+			.attr("fill", "black")
 			.style("opacity", 1);
 
 		tooltip.style("opacity", 0);

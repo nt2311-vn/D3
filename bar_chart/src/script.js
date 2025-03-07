@@ -1,9 +1,5 @@
 import * as d3 from "d3";
-
-const response = await fetch(
-	"https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json",
-);
-const { data } = await response.json();
+import { data } from "../data.json" assert { type: "json" };
 
 const w = 720;
 const h = 480;

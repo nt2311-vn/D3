@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { data } from "../data.json";
+import { data } from "./data.json";
 
 const w = 720;
 const h = 480;
@@ -71,7 +71,7 @@ svg
 		d3.select(this)
 			.transition()
 			.duration(200)
-			.attr("fill", "blue")
+			.attr("fill", "cyan")
 			.style("opacity", 0.7);
 
 		tooltip

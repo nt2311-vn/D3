@@ -5,19 +5,25 @@ const response = await fetch(
 );
 const { data } = await response.json();
 
-const w = 1080;
-const h = 720;
+const w = 720;
+const h = 480;
 const padding = { top: 20, right: 30, bottom: 40, left: 60 };
 
 const parseTime = d3.timeParse("%Y-%m-%d");
+
+/**
+ * Format quarter based on provided Date object
+ * @param {Date} date - the passing value of Date object
+ * @returns {string} returns the string formatted quarter
+ */
 const formatQuarter = (date) => {
 	const dateStr = parseTime(date);
 	const year = date.getFullYear();
 	const quarter = Math.floor(date.getMonth() / 3) + 1;
 	return `Q${quarter}${year}`;
 };
-const years = data.map((d) => parseTime(d[0]));
-const gdp = data.map((d) => d[1]);
+/** @type {string[]} */ const years = data.map((d) => parseTime(d[0]));
+/** @type {number[]} */ const gdp = data.map((d) => d[1]);
 
 const tooltip = d3
 	.select("body")

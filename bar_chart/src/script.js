@@ -68,14 +68,26 @@ svg
 	.attr("data-date", (d) => d[0])
 	.attr("data-gdp", (d) => d[1])
 	.on("mouseover", function (event, d) {
+		d3.select(this)
+			.transition()
+			.duration(200)
+			.attr("fill", "orange")
+			.style("opacity", 0.7);
+
 		tooltip
-			.style("opacity", 0.9)
+			.style("opacity", 0.3)
 			.attr("data-date", d[0])
-			.html(`${formatQuarter(d[0])}<br>$${d[1]} Billion`)
+			.html(`${formatQuarter(d[0])}<br>${d[1]} Billion`)
 			.style("left", event.pageX + 10 + "px")
 			.style("top", event.pageY - 28 + "px");
 	})
 	.on("mouseout", function () {
+		d3.select(this)
+			.transition()
+			.duration(200)
+			.attr("fill", "teal")
+			.style("opacity", 1);
+
 		tooltip.style("opacity", 0);
 	})
 

@@ -1,4 +1,5 @@
 import * as d3 from "d3";
-import * as data from "../data.json";
+import data from "../data.json";
 
-console.log(data);
+const w = 1920;
+const h = 1080;
